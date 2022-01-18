@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
-project(kColorPicker LANGUAGES CXX VERSION 0.0.1)
+project(kColorPicker LANGUAGES CXX VERSION 0.1.6)
 
-set(QT_MIN_VERSION "5.6.1")
+set(QT_MIN_VERSION "5.9.4")
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -13,10 +13,12 @@ set(CMAKE_AUTORCC ON)
 option(BUILD_TESTS "Build Unit Tests" OFF)
 option(BUILD_EXAMPLE "Build Example Application" ON)
 
-find_package(Qt5 ${QT_MIN_VERSION} REQUIRED Widgets Test)
+find_package(Qt5 ${QT_MIN_VERSION} REQUIRED Widgets)
 
 include(GNUInstallDirs)
 include(FeatureSummary)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(src)
 
@@ -25,6 +27,7 @@ if (BUILD_EXAMPLE)
 endif (BUILD_EXAMPLE)
 
 if (BUILD_TESTS)
+    find_package(Qt5 ${QT_MIN_VERSION} REQUIRED Test)
     enable_testing()
     add_subdirectory(tests)
 endif (BUILD_TESTS)
@@ -55,7 +58,8 @@ set_target_properties(kColorPicker
 					  ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib
 					  LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib
 					  RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin
-					  SOVERSION ${PROJECT_VERSION}
+		 			  VERSION ${PROJECT_VERSION}
+					  SOVERSION 0
 					  )
 
 install(TARGETS kColorPicker

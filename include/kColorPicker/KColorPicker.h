@@ -38,24 +38,26 @@ Q_OBJECT
 
 public:
 	explicit KColorPicker();
-	~KColorPicker();
+	~KColorPicker() override;
 	void setFixedSize(const QSize &size);
 	void setFixedSize(int width, int height);
+	QColor color() const;
 
-public slots:
+public Q_SLOTS:
 	void setColor(const QColor &color);
 
-signals:
+Q_SIGNALS:
 	void colorChanged(const QColor &color) const;
 
 private:
 	QScopedPointer<KColorPickerPrivate> const d_ptr;
 
-private slots:
+private Q_SLOTS:
 	void setColorIcon(const QColor &color);
 	void setIconSize(const QSize &size);
 	void colorSelected(const QColor &color);
 };
 
 }
+
 #endif //KCOLORPICKER_KCOLORPICKER_H

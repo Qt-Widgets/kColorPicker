@@ -3,7 +3,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -21,10 +21,11 @@
 
 namespace kColorPicker {
 
-AbstractPopupMenuButton::AbstractPopupMenuButton(const QIcon &icon)
+AbstractPopupMenuButton::AbstractPopupMenuButton(const QIcon &icon) :
+	mHoverColor(QColor(QLatin1String("#add8e6")))
 {
-    setIcon(icon);
-	setFixedSize(iconSize() + QSize(4,4));
+	setIcon(icon);
+	setFixedSize(iconSize() + QSize(8, 8));
     connect(this, &QToolButton::clicked, this, &AbstractPopupMenuButton::buttonClicked);
 }
 
@@ -33,20 +34,25 @@ void AbstractPopupMenuButton::paintEvent(QPaintEvent *event)
 	QPainter painter(this);
 	QStyleOption styleOption;
 	styleOption.initFrom(this);
-	auto buttonRect = event->rect();
-	auto selectionRect = QRect(buttonRect.topLeft().x(), buttonRect.topLeft().y(), iconSize().width() + 3, iconSize().height() + 3);
-	auto hoverRect = QRect(buttonRect.topLeft().x() + 1, buttonRect.topLeft().y() + 1, iconSize().width() + 1, iconSize().height() + 1);
+	auto rect = event->rect();
+	auto scaleRatio = devicePixelRatioF();
+	auto buttonRect = QRectF(rect.x() + (2 / scaleRatio), rect.y() + (2 / scaleRatio), rect.width() - 5, rect.height() - 5);
+
+	if(styleOption.state & QStyle::State_MouseOver)
+	{
+		auto defaultPen = painter.pen();
+		auto defaultBrush = painter.brush();
+		painter.setPen(mHoverColor);
+		painter.setBrush(mHoverColor);
+		painter.drawRect(buttonRect);
+		painter.setPen(defaultPen);
+		painter.setBrush(defaultBrush);
+	}
 
 	painter.drawPixmap(buttonRect.topLeft() + QPointF(2, 2), icon().pixmap(iconSize()));
 
 	if(isChecked()) {
-		painter.drawRect(selectionRect);
-	}
-	
-	if(styleOption.state & QStyle::State_MouseOver)
-	{
-		painter.setPen(QColor(QStringLiteral("#add8e6")));
-		painter.drawRect(hoverRect);
+		painter.drawRect(buttonRect);
 	}
 }
 

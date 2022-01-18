@@ -3,7 +3,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -35,9 +35,10 @@ class PopupMenu : public QMenu
 Q_OBJECT
 public:
 	PopupMenu();
-	~PopupMenu();
+	~PopupMenu() override;
 	void addColor(const QColor &color);
 	void selectColor(const QColor &color);
+	QSize sizeHint() const;
 
 signals:
 	void colorChanged(const QColor &color) const;
@@ -49,9 +50,8 @@ private:
 	ColorDialogButton *mColorDialogButton;
 
 	void generateGrid();
-	ColorButton *createButton(const QColor &color);
+	static ColorButton *createButton(const QColor &color);
 	void addColorButton(const QColor &color);
-	void addColorDialogButton();
 	void clearGrid();
 	bool isColorInGrid(const QColor &color);
 

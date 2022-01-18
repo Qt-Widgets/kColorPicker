@@ -3,7 +3,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -52,12 +52,15 @@ KColorPicker::~KColorPicker()
 void KColorPicker::setColor(const QColor &color)
 {
 	Q_D(KColorPicker);
+	d->mSelectedColor = color;
 	setColorIcon(color);
 	d->mPopupMenu.selectColor(color);
 }
 
 void KColorPicker::colorSelected(const QColor &color)
 {
+	Q_D(KColorPicker);
+	d->mSelectedColor = color;
 	setColorIcon(color);
 	emit colorChanged(color);
 }
@@ -78,6 +81,12 @@ void KColorPicker::setFixedSize(int width, int height)
 	setColorIcon(d->mSelectedColor);
 }
 
+QColor KColorPicker::color() const
+{
+	Q_D(const KColorPicker);
+	return d->mSelectedColor;
+}
+
 void KColorPicker::setIconSize(const QSize &size)
 {
 	Q_D(KColorPicker);
@@ -91,6 +100,7 @@ void KColorPicker::setColorIcon(const QColor &color)
 	Q_D(KColorPicker);
 	auto icon = IconCreator::createIcon(color, d->mIconSize);
 	setIcon(icon);
+	setToolTip(color.name());
 }
 
 //

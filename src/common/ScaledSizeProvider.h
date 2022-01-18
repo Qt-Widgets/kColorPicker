@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Damir Porobic <damir.porobic@gmx.com>
+ * Copyright (C) 2021 Damir Porobic <damir.porobic@gmx.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,23 +17,35 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef KCOLORPICKER_ICONCREATOR_H
-#define KCOLORPICKER_ICONCREATOR_H
+#ifndef KCOLORPICKER_SCALEDSIZEPROVIDER_H
+#define KCOLORPICKER_SCALEDSIZEPROVIDER_H
 
-#include <QIcon>
-#include <QColor>
-#include <QPainter>
+#include <QSize>
+
+#if defined(__linux__)
+#include <QApplication>
+#include <QScreen>
+#endif
 
 namespace kColorPicker {
 
-class IconCreator
+class ScaledSizeProvider
 {
 public:
-	explicit IconCreator() = delete;
-	~IconCreator() = delete;
-	static QIcon createIcon(const QColor &color, const QSize &size);
+	static QSize scaledSize(const QSize &size);
+
+private:
+	static qreal scaleFactor();
+	static qreal getScaleFactor();
+
+#if defined(__linux__)
+	static bool isGnomeEnvironment();
+#endif
+
+	ScaledSizeProvider() = default;
+	~ScaledSizeProvider() = default;
 };
 
 } // namespace kColorPicker
 
-#endif //KCOLORPICKER_ICONCREATOR_H
+#endif //KCOLORPICKER_SCALEDSIZEPROVIDER_H

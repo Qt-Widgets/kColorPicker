@@ -3,7 +3,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -21,14 +21,17 @@
 
 namespace kColorPicker {
 
-PopupMenu::PopupMenu()
+PopupMenu::PopupMenu() :
+	mButtonGroup(new QButtonGroup()),
+	mLayout(new QGridLayout()),
+	mColorDialogButton(new ColorDialogButton(QIcon(QLatin1String(":/icons/ellipsis"))))
 {
-	mButtonGroup = new QButtonGroup();
-	mLayout = new QGridLayout();
+
 	mLayout->setSpacing(0);
 	mLayout->setMargin(5);
 	setLayout(mLayout);
-	addColorDialogButton();
+
+	connect(mColorDialogButton, &AbstractPopupMenuButton::colorSelected, this, &PopupMenu::colorSelected);
 }
 
 PopupMenu::~PopupMenu()
@@ -76,7 +79,7 @@ void PopupMenu::generateGrid()
 
 ColorButton *PopupMenu::createButton(const QColor &color)
 {
-	auto icon = IconCreator::createIcon(color);
+	auto icon = IconCreator::createIcon(color, ScaledSizeProvider::scaledSize(QSize(25, 25)));
 	auto button = new ColorButton(icon, color);
 	return button;
 }
@@ -114,11 +117,9 @@ void PopupMenu::colorSelected(const QColor &color)
 	hide();
 }
 
-void PopupMenu::addColorDialogButton()
+QSize PopupMenu::sizeHint() const
 {
-	auto icon = QIcon(QStringLiteral(":/icons/ellipsis"));
-	mColorDialogButton = new ColorDialogButton(icon);
-	connect(mColorDialogButton, &AbstractPopupMenuButton::colorSelected, this, &PopupMenu::colorSelected);
+	return mLayout->sizeHint();
 }
 
 } // namespace kColorPicker

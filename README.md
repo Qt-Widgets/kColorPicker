@@ -1,13 +1,13 @@
-# kColorPicker [![Build Status](https://travis-ci.org/DamirPorobic/kColorPicker.svg?branch=master)](https://travis-ci.org/DamirPorobic/kColorPicker)
-QToolButton with color popup menu with lets you select a color. The popup featues a color dialog button which can be used to add custom colors to the popup menu.
+# kColorPicker [![Build Status][github-badge]][github-url]
+QToolButton with color popup menu with lets you select a color. The popup features a color dialog button which can be used to add custom colors to the popup menu.
 
-Version 0.0.1
+Version 0.1.6
 
 ![kColorPicker](https://i.imgur.com/VkhUvFa.png "kColorPicker")
 
 ### Building from source
 1. Get latest release from GitHub by cloning the repo:  
-    `$ git clone https://github.com/DamirPorobic/kColorPicker`
+    `$ git clone https://github.com/ksnip/kColorPicker`
 2. Change to repo directory:  
     `$ cd kColorPicker`  
 3. Make new build directory and enter it:  
@@ -34,3 +34,7 @@ only build as static library.
 
 2. Link the library with your application  
     `target_link_libraries(myApp kColorPicker)`  
+
+
+[github-badge]:        https://github.com/ksnip/kColorPicker/actions/workflows/build.yml/badge.svg
+[github-url]:          https://github.com/ksnip/kColorPicker/actions
